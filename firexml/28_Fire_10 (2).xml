@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<annotations>
+  <version>1.1</version>
+  <meta>
+    <task>
+      <id>28</id>
+      <name>Fire_10</name>
+      <size>2159</size>
+      <mode>interpolation</mode>
+      <overlap>5</overlap>
+      <bugtracker></bugtracker>
+      <created>2019-09-26 08:42:42.406263+03:00</created>
+      <updated>2019-09-29 11:47:34.087011+03:00</updated>
+      <start_frame>0</start_frame>
+      <stop_frame>2158</stop_frame>
+      <frame_filter></frame_filter>
+      <z_order>False</z_order>
+      <labels>
+        <label>
+          <name>fire</name>
+          <attributes>
+          </attributes>
+        </label>
+      </labels>
+      <segments>
+        <segment>
+          <id>23</id>
+          <start>0</start>
+          <stop>2158</stop>
+          <url>http://10.25.73.21:8080/?id=23</url>
+        </segment>
+      </segments>
+      <owner>
+        <username>admin</username>
+        <email>hanshuaifeng@baosight.com</email>
+      </owner>
+      <assignee></assignee>
+      <original_size>
+        <width>1280</width>
+        <height>720</height>
+      </original_size>
+    </task>
+    <dumped>2019-09-29 11:48:47.972051+03:00</dumped>
+    <source>fire4.mp4</source>
+  </meta>
+  <image id="0" name="frame_000000" width="1280" height="720">
+    <box label="fire" occluded="0" xtl="5.70" ytl="4.39" xbr="492.56" ybr="466.02">
+    </box>
+  </image>
+  <image id="1" name="frame_000001" width="1280" height="720">
+    <box label="fire" occluded="0" xtl="5.70" ytl="4.39" xbr="492.56" ybr="466.02">
+    </box>
+  </image>
+  <image id="2" name="frame_000002" width="1280" height="720">
+    <box label="fire" occluded="0" xtl="5.70" ytl="4.39" xbr="492.56" ybr="466.02">
+    </box>
+  </image>
+  <image id="3" name="frame_000003" width="1280" height="720">
+    <box label="fire" occluded="0" xtl="5.70" ytl="4.39" xbr="492.56" ybr="466.02">
+    </box>
+  </image>
+  <image id="4" name="frame_000004" width="1280" height="720">
+    <box label="fire" occluded="0" xtl="5.70" ytl="4.39" xbr="492.56" ybr="466.02">
+    </box>
+  </image>
+  <image id="10" name="frame_000010" width="1280" height="720">
+    <box label="fire" occluded="0" xtl="90.14" ytl="63.60" xbr="269.96" ybr="288.39">
+    </box>
+    <box label="fire" occluded="0" xtl="81.53" ytl="328.59" xbr="318.14" ybr="622.75">
+    </box>
+  </image>
+  <image id="11" name="frame_000011" width="1280" height="720">
+    <box label="fire" occluded="0" xtl="81.53" ytl="328.59" xbr="318.14" ybr="622.75">
+    </box>
+  </image>
+  <image id="12" name="frame_000012" width="1280" height="720">
+    <box label="fire" occluded="0" xtl="81.53" ytl="328.59" xbr="318.14" ybr="622.75">
+    </box>
+  </image>
+</annotations>

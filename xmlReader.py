@@ -1,0 +1,228 @@
+import os
+from xml.dom import minidom
+from decimal import Decimal as dec
+import xml.dom.minidom
+
+NUMBER_OF_DIGITS_TO_TRUNCATE = 6
+XML_FILE_PATH = "E:/2019BaoSight/PythonProject/xml-voc-_to_txt-yolo/firexml/"  # xml文件存放地址，可用sys.argv[1]代替
+TXT_FILE_PATH = "E:/2019BaoSight/PythonProject/xml-voc-_to_txt-yolo/txt/"  # txt文件存放地址，可用sys.argv[2]代替
+
+
+class XmlReader():
+    """
+    读取Xml文件 将框的信息封装成对象Image传给ImgSaver
+    """
+
+    def __init__(self, xml_path):
+        self.img_tree = get_img_from_xml(xml_path)
+        self.img_set = []
+
+    def generate_img_set(self, correct_sign): # 为xmlReader生成img_set
+        self.img_set = [] # 初始化img_set为空
+
+        for img in self.img_tree:
+            print("将 " + img.getAttribute("name") + "添加至img_set中...")
+            img_box = img.childNodes[1]
+
+            # 从xml获取image参数
+            img_label = img_box.getAttribute("label")
+            img_occluded = img_box.getAttribute("occluded")
+            img_xtl = img_box.getAttribute("xtl")
+            img_ytl = img_box.getAttribute("ytl")
+            img_xbr = img_box.getAttribute("xbr")
+            img_ybr = img_box.getAttribute("ybr")
+
+            # 当且仅当occluded为0时添加至img_set列表
+            if img_occluded == correct_sign: # 暂时还没加index异常抛出，要是一张图都不截会炸
+                # 创建image对象并添加金img_set
+                image = Image(img_xtl, img_ytl, img_xbr, img_ybr)
+                self.img_set.append(image)
+
+
+class Image():
+    """
+    图片对象，保存的信息包括
+    xtl: 左上顶点的x坐标
+    ytl: 左上顶点的y坐标
+    xbr: 右下顶点的x坐标
+    ybr: 右下顶点的y坐标
+    """
+
+    def __init__(self, xtl, ytl, xbr, ybr):
+        self.xtl = xtl
+        self.ytl = ytl
+        self.xbr = xbr
+        self.ybr = ybr
+
+
+def truncate(num_list):
+    for i, val in enumerate(num_list):
+        num_list[i] = float(round(dec(val), NUMBER_OF_DIGITS_TO_TRUNCATE))
+
+
+
+def handle_index_ValueError(class_name, classes_list, ob_class):
+    for val in class_name:
+        try:
+            classes_list.index(val)
+        except ValueError:
+            classes_list.append(val)
+
+        # print(classes_list.index(val))
+        ob_class.append(classes_list.index(val))
+
+    # print(classes_list)
+    # print(class_name)
+    # print(ob_class)
+
+
+# this function returns the value of a given tag in list format,
+# the return format is a list even when there is only one number
+def return_list_from_xml_field(xml_field):
+    elements = []
+    for i in xml_field:
+        elements.append(i.toxml().split(">")[1].split("<")[0])  # this is ugly, i know
+    return elements
+
+
+def get_img_from_xml(path_to_xml_file):
+    """
+    从xml文件中加载图片集
+    :param path_to_xml_file: xml文件的地址
+    :return: 包含img DOM 的 list
+    """
+    # 加载 xml file
+    for file in os.listdir(XML_FILE_PATH):  # 对文件夹内的每个文件进行判断，若为xml则将img添加进img_set
+        if file.endswith(".xml"):
+            DOMTree = xml.dom.minidom.parse(path_to_xml_file + file)
+            collection = DOMTree.documentElement
+            img_tree = collection.getElementsByTagName('image')
+
+    return img_tree
+
+
+
+def get_data_from_xml(path_to_xml_file):
+    # 加载 xml file
+    xmldoc = minidom.parse(path_to_xml_file)
+
+    # 返回 xml classes names
+
+    class_name = return_list_from_xml_field(xmldoc.getElementsByTagName('name'))
+
+    # load images width and height from xml file
+
+    image_width = return_list_from_xml_field(xmldoc.getElementsByTagName('width'))
+    image_height = return_list_from_xml_field(xmldoc.getElementsByTagName('height'))
+
+    image_width = list(map(float, image_width))
+    image_height = list(map(float, image_height))
+
+    # load bouding boxes width and height from xml file
+
+    x_max = return_list_from_xml_field(xmldoc.getElementsByTagName('xmax'))
+    x_min = return_list_from_xml_field(xmldoc.getElementsByTagName('xmin'))
+    y_max = return_list_from_xml_field(xmldoc.getElementsByTagName('ymax'))
+    y_min = return_list_from_xml_field(xmldoc.getElementsByTagName('ymin'))
+
+    x_max = list(map(float, x_max))
+    x_min = list(map(float, x_min))
+    y_max = list(map(float, y_max))
+    y_min = list(map(float, y_min))
+
+    absolute_x = []
+    absolute_y = []
+    absolute_width = []
+    absolute_height = []
+
+    # if your xml has more than one labeled object, the x_max,x_min,y_max,y_min will be lists
+    for i in range(len(x_max)):
+        # calculate the bouding box center in x axis and y axis
+
+        absolute_x.append(x_min[i] + 0.5 * (x_max[i] - x_min[i]))
+        absolute_y.append(y_min[i] + 0.5 * (y_max[i] - y_min[i]))
+
+        # calculate absolute width and height from bouding boxes
+
+        absolute_width.append(x_max[i] - x_min[i])
+        absolute_height.append(y_max[i] - y_min[i])
+
+    return class_name, absolute_x, absolute_y, absolute_width, absolute_height, image_width, image_height
+
+
+def transform_from_xml_to_txt_format(absolute_x, absolute_y, absolute_width, absolute_height, image_width,
+                                     image_height):
+    # yolo coordinates of the bouding boxes are relative to image,
+    # so we have to divide the measures by the image measures
+    x = []
+    y = []
+    width = []
+    height = []
+    for i in range(len(absolute_width)):
+        x.append(absolute_x[i] / image_width[0])
+        y.append(absolute_y[i] / image_height[0])
+        width.append(absolute_width[i] / image_width[0])
+        height.append(absolute_height[i] / image_height[0])
+
+    return x, y, width, height
+
+
+def create_txt_file(ob_class, x, y, width, height, path_of_file_creation, file_name):
+    # open file on writing mode, write values received and close the file
+    txt_file = open(path_of_file_creation + file_name, "w+")
+
+    truncate(x)
+    truncate(y)
+    truncate(width)
+    truncate(height)
+
+    x = list(map(str, x))
+    y = list(map(str, y))
+    width = list(map(str, width))
+    height = list(map(str, height))
+    ob_class = list(map(str, ob_class))
+
+    for i in range(len(ob_class)):
+        # print("imagem:"+str(i))
+        # print(x[i])
+        # print(y[i])
+        # print(width[i])
+        # print(height[i])
+        txt_file.write(ob_class[i] + " " + x[i] + " " + y[i] + " " + width[i] + " " + height[i])
+        txt_file.write("\n")
+
+    txt_file.close()
+
+
+if __name__ == "__main__":
+    # classes_list = []
+    # for file in os.listdir(XML_FILE_PATH):
+    #     if file.endswith(".xml"):
+    #         class_name,absolute_x,absolute_y,absolute_width,absolute_height, image_width, image_height = get_data_from_xml(XML_FILE_PATH+file)
+    #         ob_class = []
+    #
+    #         handle_index_ValueError(class_name,classes_list,ob_class)
+    #
+    #
+    #
+    #         x,y,width,height = transform_from_xml_to_txt_format(absolute_x,absolute_y,absolute_width,absolute_height, image_width, image_height)
+    #         create_txt_file(ob_class,x,y,width,height,TXT_FILE_PATH,file[:-4])
+    #
+    # generate_classes_file(classes_list,TXT_FILE_PATH)
+    # print("Conversão efetuada com sucesso.")
+
+    # for file in os.listdir(XML_FILE_PATH):
+    #     if file.endswith(".xml"):
+    #         img_set = get_img_from_xml(XML_FILE_PATH + file) # 获取xml文件中的img集合
+    #
+    #         for img in img_set:
+    #             print("准备处理 " + img.getAttribute("name"))
+    #             img_xtl = img.getAttribute("xtl")
+    #             img_ytl = img.getAttribute("ytl")
+    #             img_xbr = img.getAttribute("xbr")
+    #             img_ybr = img.getAttribute("ybr")
+
+    xmlReader = XmlReader(XML_FILE_PATH)
+    xmlReader.generate_img_set("0") #入参为需要截取时，occluded的取值
+    print(xmlReader.img_set[1].xtl)
+
