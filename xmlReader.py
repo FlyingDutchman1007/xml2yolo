@@ -33,7 +33,7 @@ class XmlReader():
             img_box = img.childNodes[1]
 
             # 从xml获取image参数
-            img_id = img.getAttribute("id")
+            img_id = img.getAttribute("id").zfill(6)
             img_label = img_box.getAttribute("label")
             img_occluded = img_box.getAttribute("occluded")
             img_xtl = img_box.getAttribute("xtl")
@@ -48,10 +48,13 @@ class XmlReader():
                 self.img_set.append(image)
 
 
-
 class Image():
     """
     图片对象，保存的信息包括
+    xml_id: 该xml文件的编号
+    id: 图片的帧号
+    label: 图片的label
+    occluded: 图片是否为关键帧
     xtl: 左上顶点的x坐标
     ytl: 左上顶点的y坐标
     xbr: 右下顶点的x坐标
@@ -83,12 +86,8 @@ def handle_index_ValueError(class_name, classes_list, ob_class):
         except ValueError:
             classes_list.append(val)
 
-        # print(classes_list.index(val))
         ob_class.append(classes_list.index(val))
 
-    # print(classes_list)
-    # print(class_name)
-    # print(ob_class)
 
 
 # this function returns the value of a given tag in list format,
@@ -151,6 +150,11 @@ def get_id_from_xml(path_to_xml_file):
 
 
 def get_data_from_xml(path_to_xml_file):
+    """
+    原本用于xml硬转txt的方法，已被弃置
+    :param path_to_xml_file:
+    :return:
+    """
     # 加载 xml file
     xmldoc = minidom.parse(path_to_xml_file)
 
@@ -200,6 +204,16 @@ def get_data_from_xml(path_to_xml_file):
 
 def transform_from_xml_to_txt_format(absolute_x, absolute_y, absolute_width, absolute_height, image_width,
                                      image_height):
+    """
+    已被弃置
+    :param absolute_x:
+    :param absolute_y:
+    :param absolute_width:
+    :param absolute_height:
+    :param image_width:
+    :param image_height:
+    :return:
+    """
     # yolo coordinates of the bouding boxes are relative to image,
     # so we have to divide the measures by the image measures
     x = []
@@ -216,6 +230,17 @@ def transform_from_xml_to_txt_format(absolute_x, absolute_y, absolute_width, abs
 
 
 def create_txt_file(ob_class, x, y, width, height, path_of_file_creation, file_name):
+    """
+    已被弃置
+    :param ob_class:
+    :param x:
+    :param y:
+    :param width:
+    :param height:
+    :param path_of_file_creation:
+    :param file_name:
+    :return:
+    """
     # open file on writing mode, write values received and close the file
     txt_file = open(path_of_file_creation + file_name, "w+")
 
@@ -241,7 +266,10 @@ def create_txt_file(ob_class, x, y, width, height, path_of_file_creation, file_n
 
     txt_file.close()
 
-#
+
+
+# 若需要单独测试xmlReader,可执行一下代码：
+
 # if __name__ == "__main__":
 #     # classes_list = []
 #     # for file in os.listdir(XML_FILE_PATH):

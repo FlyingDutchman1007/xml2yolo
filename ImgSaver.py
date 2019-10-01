@@ -23,15 +23,11 @@ class ImgSaver():
         保存图片的方法，将图片保存到指定文件目录
         :return: 是否成功
         """
-
         self.xmlReader.generate_img_set("0")  # 入参为需要截取时，occluded的取值
 
         cap = cv.VideoCapture(VIDEO_FILE_PATH + "fire4.mp4")  # 一个被写死的文件名
         isOpened = cap.isOpened()  # 判断视频是否打开
         print(isOpened)
-
-        end_time = self.xmlReader.img_set[-1].id
-        print(end_time)
 
         current_frame = 0
         while isOpened:
@@ -41,21 +37,29 @@ class ImgSaver():
                 current_frame = current_frame + 1
 
             (flag, frame) = cap.read()
-            # 图片裁剪
+            # 图片裁剪,cv2按整数pix截取，这里采取整数四舍五入
             xtl = round(float(self.xmlReader.img_set[current_frame - 1].xtl))
             ytl = round(float(self.xmlReader.img_set[current_frame - 1].ytl))
             xbr = round(float(self.xmlReader.img_set[current_frame - 1].xbr))
             ybr = round(float(self.xmlReader.img_set[current_frame - 1].ybr))
             img_id = self.xmlReader.img_set[current_frame - 1].id
-            frame = frame[xtl:xbr, ytl:ybr]
+
+            frame = frame[xtl:xbr, ytl:ybr] # 裁剪图片
 
             # 图片命名格式
             fileName = "ID_" + str(self.xmlReader.id) + "_frame_" + str(img_id) + ".jpg"
-            print(fileName)
+            print("正在截取 " + fileName + " ...")
             if flag == True:
                 cv.imwrite(IMG_FILE_PATH + fileName, frame, [cv.IMWRITE_JPEG_CHROMA_QUALITY, 100])  ##命名 图片 图片质量
         print("finish")
         return True
+
+"""
+运行程序，new一个ImgSaver对象，给ImgSaver指定xml文件路径
+若要指定img dir等其他文件路径，只需把固定变量添加到ImgSaver的attribute中即可
+"""
+imgSaver = ImgSaver(XML_FILE_PATH)
+imgSaver.save_img()
 
 
 # xmlReader = xmlReader.XmlReader(XML_FILE_PATH)
