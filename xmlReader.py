@@ -4,22 +4,30 @@ from decimal import Decimal as dec
 import xml.dom.minidom
 
 NUMBER_OF_DIGITS_TO_TRUNCATE = 6
-XML_FILE_PATH = "E:/2019BaoSight/PythonProject/xml-voc-_to_txt-yolo/firexml/"  # xml文件存放地址，可用sys.argv[1]代替
-TXT_FILE_PATH = "E:/2019BaoSight/PythonProject/xml-voc-_to_txt-yolo/txt/"  # txt文件存放地址，可用sys.argv[2]代替
+XML_FILE_PATH = "E:/2019BaoSight/PythonProject/xml2yolo/firexml/"  # xml文件存放地址，可用sys.argv[1]代替
+TXT_FILE_PATH = "E:/2019BaoSight/PythonProject/xml2yolo/txt/"  # txt文件存放地址，可用sys.argv[2]代替
 
 
 class XmlReader():
     """
-    读取Xml文件 将框的信息封装成对象Image传给ImgSaver
+    读取单个Xml文件 将框的信息封装成对象Image传给ImgSaver
     """
 
     def __init__(self, xml_path):
+        self.xml_path = xml_path
         self.img_tree = get_img_from_xml(xml_path)
         self.img_set = []
+        self.id = get_id_from_xml(xml_path)
 
     def generate_img_set(self, correct_sign): # 为xmlReader生成img_set
+        """
+        初始化xmlReader, 先生成img_set; 后对xmlReader的id进行读取、赋值
+        :param correct_sign: 当且仅当occluded为0时添加至img_set列表，即occluded
+        :return: None
+        """
         self.img_set = [] # 初始化img_set为空
 
+        # for img in self.img_tree.getElementsByTagName("image"):
         for img in self.img_tree:
             print("将 " + img.getAttribute("name") + "添加至img_set中...")
             img_box = img.childNodes[1]
@@ -36,8 +44,9 @@ class XmlReader():
             # 当且仅当occluded为0时添加至img_set列表
             if img_occluded == correct_sign: # 暂时还没加index异常抛出，要是一张图都不截会炸
                 # 创建image对象并添加金img_set
-                image = Image(img_id, img_label, img_occluded, img_xtl, img_ytl, img_xbr, img_ybr)
+                image = Image(self.id ,img_id, img_label, img_occluded, img_xtl, img_ytl, img_xbr, img_ybr)
                 self.img_set.append(image)
+
 
 
 class Image():
@@ -49,8 +58,9 @@ class Image():
     ybr: 右下顶点的y坐标
     """
 
-    def __init__(self, id, label, occluded, xtl, ytl, xbr, ybr):
+    def __init__(self, xml_id, id, label, occluded, xtl, ytl, xbr, ybr):
 
+        self.xml_id = xml_id
         self.id = id
         self.label = label
         self.occluded = occluded
@@ -99,11 +109,44 @@ def get_img_from_xml(path_to_xml_file):
     # 加载 xml file
     for file in os.listdir(XML_FILE_PATH):  # 对文件夹内的每个文件进行判断，若为xml则将img添加进img_set
         if file.endswith(".xml"):
+            # 获取img_tree
             DOMTree = xml.dom.minidom.parse(path_to_xml_file + file)
             collection = DOMTree.documentElement
             img_tree = collection.getElementsByTagName('image')
 
     return img_tree
+
+def get_data_from_xml(path_to_xml_file):
+    """
+    从xml文件中加载图片集
+    :param path_to_xml_file: xml文件的地址
+    :return: 包含img DOM 的 list
+    """
+    # 加载 xml file
+    for file in os.listdir(path_to_xml_file):  # 对文件夹内的每个文件进行判断，若为xml则将img添加进img_set
+        if file.endswith(".xml"):
+            DOMTree = xml.dom.minidom.parse(path_to_xml_file + file)
+            collection = DOMTree.documentElement
+            # img_tree = collection.getElementsByTagName('image')
+
+    return collection
+
+def get_id_from_xml(path_to_xml_file):
+    """
+    从xml文件中获取当前xml的id
+    :param path_to_xml_file: xml文件的地址
+    :return: 包含img DOM 的 list
+    """
+    # 加载 xml file
+    for file in os.listdir(XML_FILE_PATH):  # 对文件夹内的每个文件进行判断，若为xml则将img添加进img_set
+        if file.endswith(".xml"):
+            DOMTree = xml.dom.minidom.parse(path_to_xml_file + file)
+            collection = DOMTree.documentElement
+            url = collection.getElementsByTagName('url')
+            url = url[0].childNodes[0].data
+            id = url.split("id=")[1]
+
+    return id
 
 
 
@@ -198,36 +241,37 @@ def create_txt_file(ob_class, x, y, width, height, path_of_file_creation, file_n
 
     txt_file.close()
 
-
-if __name__ == "__main__":
-    # classes_list = []
-    # for file in os.listdir(XML_FILE_PATH):
-    #     if file.endswith(".xml"):
-    #         class_name,absolute_x,absolute_y,absolute_width,absolute_height, image_width, image_height = get_data_from_xml(XML_FILE_PATH+file)
-    #         ob_class = []
-    #
-    #         handle_index_ValueError(class_name,classes_list,ob_class)
-    #
-    #
-    #
-    #         x,y,width,height = transform_from_xml_to_txt_format(absolute_x,absolute_y,absolute_width,absolute_height, image_width, image_height)
-    #         create_txt_file(ob_class,x,y,width,height,TXT_FILE_PATH,file[:-4])
-    #
-    # generate_classes_file(classes_list,TXT_FILE_PATH)
-    # print("Conversão efetuada com sucesso.")
-
-    # for file in os.listdir(XML_FILE_PATH):
-    #     if file.endswith(".xml"):
-    #         img_set = get_img_from_xml(XML_FILE_PATH + file) # 获取xml文件中的img集合
-    #
-    #         for img in img_set:
-    #             print("准备处理 " + img.getAttribute("name"))
-    #             img_xtl = img.getAttribute("xtl")
-    #             img_ytl = img.getAttribute("ytl")
-    #             img_xbr = img.getAttribute("xbr")
-    #             img_ybr = img.getAttribute("ybr")
-
-    xmlReader = XmlReader(XML_FILE_PATH)
-    xmlReader.generate_img_set("0") #入参为需要截取时，occluded的取值
-    print(xmlReader.img_set[1].xtl)
+#
+# if __name__ == "__main__":
+#     # classes_list = []
+#     # for file in os.listdir(XML_FILE_PATH):
+#     #     if file.endswith(".xml"):
+#     #         class_name,absolute_x,absolute_y,absolute_width,absolute_height, image_width, image_height = get_data_from_xml(XML_FILE_PATH+file)
+#     #         ob_class = []
+#     #
+#     #         handle_index_ValueError(class_name,classes_list,ob_class)
+#     #
+#     #
+#     #
+#     #         x,y,width,height = transform_from_xml_to_txt_format(absolute_x,absolute_y,absolute_width,absolute_height, image_width, image_height)
+#     #         create_txt_file(ob_class,x,y,width,height,TXT_FILE_PATH,file[:-4])
+#     #
+#     # generate_classes_file(classes_list,TXT_FILE_PATH)
+#     # print("Conversão efetuada com sucesso.")
+#
+#     # for file in os.listdir(XML_FILE_PATH):
+#     #     if file.endswith(".xml"):
+#     #         img_set = get_img_from_xml(XML_FILE_PATH + file) # 获取xml文件中的img集合
+#     #
+#     #         for img in img_set:
+#     #             print("准备处理 " + img.getAttribute("name"))
+#     #             img_xtl = img.getAttribute("xtl")
+#     #             img_ytl = img.getAttribute("ytl")
+#     #             img_xbr = img.getAttribute("xbr")
+#     #             img_ybr = img.getAttribute("ybr")
+#
+#     xmlReader = XmlReader(XML_FILE_PATH)
+#     xmlReader.generate_img_set("0") #入参为需要截取时，occluded的取值
+#     print(xmlReader.img_set[1].xtl)
+#     print(str(xmlReader.id))
 
