@@ -4,7 +4,7 @@ from decimal import Decimal as dec
 
 
 NUMBER_OF_DIGITS_TO_TRUNCATE = 6
-XML_FILE_PATH = "E:/2019BaoSight/PythonProject/xml-voc-_to_txt-yolo/firexml/" # xml文件存放地址，可用sys.argv[1]代替
+XML_FILE_PATH = "E:/2019BaoSight/PythonProject/xml-voc-_to_txt-yolo/xml/" # xml文件存放地址，可用sys.argv[1]代替
 TXT_FILE_PATH = "E:/2019BaoSight/PythonProject/xml-voc-_to_txt-yolo/txt/" # txt文件存放地址，可用sys.argv[2]代替
 
 def truncate(num_list):
@@ -42,7 +42,7 @@ def handle_index_ValueError(class_name, classes_list, ob_class):
 def return_list_from_xml_field(xml_field):
     elements = []
     for i in xml_field:
-        elements.append(i.toxml().split(">")[1].split("<")[0]) #this is ugly, i know
+        elements.append(i.toxml().split(">")[1].split("<")[0])
     return elements
 
 def get_img_from_xml(path_to_xml_file):

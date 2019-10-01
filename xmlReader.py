@@ -4,7 +4,7 @@ from decimal import Decimal as dec
 import xml.dom.minidom
 
 NUMBER_OF_DIGITS_TO_TRUNCATE = 6
-XML_FILE_PATH = "E:/2019BaoSight/PythonProject/xml2yolo/firexml/"  # xml文件存放地址，可用sys.argv[1]代替
+XML_FILE_PATH = "E:/2019BaoSight/PythonProject/xml2yolo/xml/"  # xml文件存放地址，可用sys.argv[1]代替
 TXT_FILE_PATH = "E:/2019BaoSight/PythonProject/xml2yolo/txt/"  # txt文件存放地址，可用sys.argv[2]代替
 
 
