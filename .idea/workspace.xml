@@ -2,17 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2e2d903f-58ec-41cc-9e62-929147f1cd04" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ImgSaver.py" beforeDir="false" afterPath="$PROJECT_DIR$/ImgSaver.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/ID_23_frame_0.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/ID_23_frame_1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/ID_23_frame_10.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/ID_23_frame_11.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/ID_23_frame_12.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/ID_23_frame_2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/ID_23_frame_3.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/ID_23_frame_4.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/xmlReader.py" beforeDir="false" afterPath="$PROJECT_DIR$/xmlReader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -23,21 +13,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor />
+              <first_editor relative-caret-position="228">
+                <caret line="12" selection-start-line="12" selection-end-line="12" />
+              </first_editor>
               <second_editor />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ImgSaver.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ImgSaver.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ImgSaver.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="57">
-              <caret line="39" column="41" lean-forward="true" selection-start-line="39" selection-start-column="41" selection-end-line="39" selection-end-column="41" />
+            <state relative-caret-position="285">
+              <caret line="60" selection-start-line="60" selection-end-line="61" selection-end-column="19" />
               <folding>
                 <element signature="e#0#16#0" expanded="true" />
               </folding>
@@ -93,6 +85,7 @@
         <option value="$PROJECT_DIR$/convert.py" />
         <option value="$PROJECT_DIR$/xmlReader.py" />
         <option value="$PROJECT_DIR$/ImgSaver.py" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -449,14 +442,6 @@
     <entry file="file://$PROJECT_DIR$/xml/28_Fire_10 (2).xml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor />
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/xmlReader.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-19">
@@ -469,11 +454,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ImgSaver.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="57">
-          <caret line="39" column="41" lean-forward="true" selection-start-line="39" selection-start-column="41" selection-end-line="39" selection-end-column="41" />
+        <state relative-caret-position="285">
+          <caret line="60" selection-start-line="60" selection-end-line="61" selection-end-column="19" />
           <folding>
             <element signature="e#0#16#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="228">
+            <caret line="12" selection-start-line="12" selection-end-line="12" />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>
