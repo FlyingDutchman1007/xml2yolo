@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/xml-voc-_to_txt-yolo.iml" filepath="$PROJECT_DIR$/.idea/xml-voc-_to_txt-yolo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/xml2yolo.iml" filepath="$PROJECT_DIR$/.idea/xml2yolo.iml" />
     </modules>
   </component>
 </project>

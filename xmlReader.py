@@ -25,6 +25,7 @@ class XmlReader():
             img_box = img.childNodes[1]
 
             # 从xml获取image参数
+            img_id = img.getAttribute("id")
             img_label = img_box.getAttribute("label")
             img_occluded = img_box.getAttribute("occluded")
             img_xtl = img_box.getAttribute("xtl")
@@ -35,7 +36,7 @@ class XmlReader():
             # 当且仅当occluded为0时添加至img_set列表
             if img_occluded == correct_sign: # 暂时还没加index异常抛出，要是一张图都不截会炸
                 # 创建image对象并添加金img_set
-                image = Image(img_xtl, img_ytl, img_xbr, img_ybr)
+                image = Image(img_id, img_label, img_occluded, img_xtl, img_ytl, img_xbr, img_ybr)
                 self.img_set.append(image)
 
 
@@ -48,7 +49,11 @@ class Image():
     ybr: 右下顶点的y坐标
     """
 
-    def __init__(self, xtl, ytl, xbr, ybr):
+    def __init__(self, id, label, occluded, xtl, ytl, xbr, ybr):
+
+        self.id = id
+        self.label = label
+        self.occluded = occluded
         self.xtl = xtl
         self.ytl = ytl
         self.xbr = xbr
