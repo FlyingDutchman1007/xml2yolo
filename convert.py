@@ -108,7 +108,7 @@ def get_data_from_xml(path_to_xml_file):
 
 def transform_from_xml_to_txt_format(absolute_x,absolute_y,absolute_width,absolute_height,image_width,image_height):
 
-    #yolo coordinates of the bouding boxes are relative to image,
+    # yolo coordinates of the bouding boxes are relative to image,
     # so we have to divide the measures by the image measures 
     x = []
     y = []
@@ -165,9 +165,9 @@ if __name__ == "__main__":
     #         create_txt_file(ob_class,x,y,width,height,TXT_FILE_PATH,file[:-4])
     #
     # generate_classes_file(classes_list,TXT_FILE_PATH)
-    #print("Conversão efetuada com sucesso.")
+    # print("Conversão efetuada com sucesso.")
 
-    for file in os.listdir(XML_FILE_PATH):
-        if file.endswith(".xml"):
-            img_set = get_img_from_xml(XML_FILE_PATH+file)
-            print(img_set)
+    # for file in os.listdir(XML_FILE_PATH):
+    #     if file.endswith(".xml"):
+    #         img_set = get_img_from_xml(XML_FILE_PATH+file)
+    #         print(img_set)
