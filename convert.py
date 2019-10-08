@@ -167,7 +167,7 @@ if __name__ == "__main__":
     # generate_classes_file(classes_list,TXT_FILE_PATH)
     # print("Conversão efetuada com sucesso.")
 
-    # for file in os.listdir(XML_FILE_PATH):
-    #     if file.endswith(".xml"):
-    #         img_set = get_img_from_xml(XML_FILE_PATH+file)
-    #         print(img_set)
+    for file in os.listdir(XML_FILE_PATH):
+        if file.endswith(".xml"):
+            img_set = get_img_from_xml(XML_FILE_PATH+file)
+            print(img_set)
